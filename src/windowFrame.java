@@ -2,8 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class windowFrame extends JFrame implements ActionListener{
+
+    int posX=0, posY=0;
+
     // Button
     JButton btn_close;
     JButton btn_dragbar;
@@ -30,11 +35,16 @@ public class windowFrame extends JFrame implements ActionListener{
         super(title);
 
         // JFrame
-        setSize(300,300);
+        setSize(230,230);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
         setBackground(new Color(0,0,0,122));
         setAlwaysOnTop(true);
+
+        Dimension frameSize = this.getSize(); // 프레임 사이즈
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
+        this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
+
 
         // JButton
         btn_setting = new JButton(new ImageIcon(tmp_set));
@@ -45,15 +55,36 @@ public class windowFrame extends JFrame implements ActionListener{
         createButton(btn_dragbar);
         createButton(btn_minimize);
         createButton(btn_close);
+        // listener
         btn_setting.addActionListener(this);
         btn_dragbar.addActionListener(this);
         btn_minimize.addActionListener(this);
         btn_close.addActionListener(this);
+        // set location and size
         btn_setting.setBounds(5,5,20,20);
-        btn_dragbar.setBounds(140,5,20,20);
-        btn_minimize.setBounds(250,5,20,20);
-        btn_close.setBounds(275,5,20,20);
+        //btn_dragbar.setBounds(140,5,20,20);
+        btn_minimize.setBounds(180,5,20,20);
+        btn_close.setBounds(205,5,20,20);
 
+
+        this.addMouseListener(new MouseAdapter()
+        {
+            public void mousePressed(MouseEvent e)
+            {
+                posX=e.getX();
+                posY=e.getY();
+            }
+        });
+
+        this.addMouseMotionListener(new MouseAdapter()
+        {
+            public void mouseDragged(MouseEvent evt)
+            {
+                //sets frame position when mouse dragged
+                setLocation (evt.getXOnScreen()-posX,evt.getYOnScreen()-posY);
+
+            }
+        });
         // JPanel
         contentPanel.add(btn_setting);
         contentPanel.add(btn_dragbar);
@@ -75,8 +106,11 @@ public class windowFrame extends JFrame implements ActionListener{
             System.out.println("dragbar");
         }else if(btn_minimize.equals(e.getSource())){
             System.out.println("minimize");
+            // minimize
+            setState(Frame.ICONIFIED);
         }else if(btn_close.equals(e.getSource())){
             System.out.println("close");
+            // close
             System.exit(0);
         }
     }
