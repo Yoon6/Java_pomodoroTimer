@@ -24,25 +24,31 @@ public class CustomPanel extends JPanel {
         g2D.rotate(Math.toRadians(270));
         Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
         // 가리는 원
-        Ellipse2D circle = new Ellipse2D.Float(0,0,110,110);
-        arc.setFrameFromCenter(new Point(0,0),new Point(120,120));
-        circle.setFrameFromCenter(new Point(0,0),new Point(110,110));
+        Ellipse2D circle = new Ellipse2D.Float(0,0,65,65);
+        Ellipse2D base_circle = new Ellipse2D.Float(0,0,85,85);
+        arc.setFrameFromCenter(new Point(0,0),new Point(80,80));
+        circle.setFrameFromCenter(new Point(0,0),new Point(65,65));
+        base_circle.setFrameFromCenter(new Point(0,0),new Point(85,85));
         // 시작 각도
         arc.setAngleStart(1);
         // 범위 ; -:반대로
         arc.setAngleExtent(progress*3.6);// 360/100
 
         // 그림
-        g2D.setColor(Color.red);
+        g2D.setColor(Color.BLACK);
+        g2D.draw(base_circle);
+        g2D.fill(base_circle);
+        g2D.setColor(new Color(251, 103, 98));
         g2D.draw(arc);
         g2D.fill(arc);
-        g2D.setColor(Color.white);
+        g2D.setColor(Color.WHITE);
         g2D.draw(circle);
         g2D.fill(circle);
+
         // 글자
-        g2D.setColor(Color.DARK_GRAY);
+        g2D.setColor(new Color(82, 82, 80));
         g2D.rotate(Math.toRadians(90));
-        g.setFont(new Font("Verdana",Font.PLAIN,50));
+        g.setFont(new Font("Verdana",Font.PLAIN,30));
         FontMetrics fm = g2D.getFontMetrics();
         Rectangle2D r = fm.getStringBounds(progress+"%",g);
         int x = (0-(int)r.getWidth())/2; // 글자 폭의 반

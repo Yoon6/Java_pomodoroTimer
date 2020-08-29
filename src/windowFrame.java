@@ -1,3 +1,6 @@
+import ProgressBar.CustomPanel;
+import ProgressBar.ProgressBarDemo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,6 +33,9 @@ public class windowFrame extends JFrame implements ActionListener{
     JPanel panel = new JPanel();
 
     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
+
+    public CustomPanel timer_panel = new CustomPanel();
+
     public windowFrame(String title){
 
         super(title);
@@ -38,7 +44,7 @@ public class windowFrame extends JFrame implements ActionListener{
         setSize(230,230);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setBackground(new Color(0,0,0,122));
+        setBackground(new Color(0,0,0,60));
         setAlwaysOnTop(true);
 
         Dimension frameSize = this.getSize(); // 프레임 사이즈
@@ -85,6 +91,7 @@ public class windowFrame extends JFrame implements ActionListener{
 
             }
         });
+
         // JPanel
         contentPanel.add(btn_setting);
         contentPanel.add(btn_dragbar);
@@ -94,6 +101,8 @@ public class windowFrame extends JFrame implements ActionListener{
         panel.setLayout(flowLayout);
         contentPanel.add(panel);
 
+        timer_panel.setBackground(new Color(0,128,128,0));
+        contentPanel.add(timer_panel);
 
         setVisible(true);
     }
@@ -102,6 +111,24 @@ public class windowFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (btn_setting.equals(e.getSource())) {
             System.out.println("setting");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for(int num=100; num>=0; num--){
+                        timer_panel.UpdateProgress(num);
+                        timer_panel.repaint();
+                        try {
+                            Thread.sleep(50);
+                            if(num==0){
+                                timer_panel.UpdateProgress(100);
+                                timer_panel.repaint();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
         }else if(btn_dragbar.equals(e.getSource())){
             System.out.println("dragbar");
         }else if(btn_minimize.equals(e.getSource())){
@@ -122,4 +149,5 @@ public class windowFrame extends JFrame implements ActionListener{
         btn.setFocusPainted(false);
         btn.setContentAreaFilled(false);
     }
-}
+
+    }
