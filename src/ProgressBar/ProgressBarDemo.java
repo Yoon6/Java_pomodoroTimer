@@ -1,15 +1,12 @@
 package ProgressBar;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ProgressBarDemo extends JFrame implements ActionListener {
     private JButton button1;
-    Container contentPanel = this.getContentPane();
     private CustomPanel jpanel = new CustomPanel();
-    private JPanel fir_panel = new JPanel();
 
     public ProgressBarDemo(){
         super("ProgressBar");
@@ -23,6 +20,7 @@ public class ProgressBarDemo extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    @Override
     public void actionPerformed(ActionEvent evt){
         new Thread(new Runnable() {
             @Override
@@ -42,6 +40,5 @@ public class ProgressBarDemo extends JFrame implements ActionListener {
                 }
             }
         }).start();
-
     }
 }
