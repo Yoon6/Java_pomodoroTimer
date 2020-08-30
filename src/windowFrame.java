@@ -44,7 +44,7 @@ public class windowFrame extends JFrame implements ActionListener{
         setSize(230,230);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setBackground(new Color(0,0,0,60));
+        setBackground(new Color(0,0,0,1));
         setAlwaysOnTop(true);
 
         Dimension frameSize = this.getSize(); // 프레임 사이즈
@@ -114,13 +114,13 @@ public class windowFrame extends JFrame implements ActionListener{
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    for(int num=100; num>=0; num--){
+                    for(int num=10; num>=0; num--){
                         timer_panel.UpdateProgress(num);
                         timer_panel.repaint();
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(1000);
                             if(num==0){
-                                timer_panel.UpdateProgress(100);
+                                timer_panel.UpdateProgress(10);
                                 timer_panel.repaint();
                             }
                         } catch (InterruptedException e) {
