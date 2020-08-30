@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 public class CustomPanel extends JPanel {
-    int progress = 100;
+    int progress = 10;
     public void UpdateProgress(int progress){
         this.progress=progress;
     }
@@ -32,7 +32,7 @@ public class CustomPanel extends JPanel {
         // 시작 각도
         arc.setAngleStart(1);
         // 범위 ; -:반대로
-        arc.setAngleExtent(progress*3.6);// 360/100
+        arc.setAngleExtent(progress*36);// 360/100
 
         // 그림
         g2D.setColor(Color.BLACK);
@@ -50,9 +50,9 @@ public class CustomPanel extends JPanel {
         g2D.rotate(Math.toRadians(90));
         g.setFont(new Font("Verdana",Font.PLAIN,30));
         FontMetrics fm = g2D.getFontMetrics();
-        Rectangle2D r = fm.getStringBounds(progress+"%",g);
+        Rectangle2D r = fm.getStringBounds(progress+"초",g);
         int x = (0-(int)r.getWidth())/2; // 글자 폭의 반
         int y = (0-(int)r.getHeight())/2+fm.getAscent(); // 글자 높이의 반 + y축값
-        g2D.drawString(progress+"%",x,y);
+        g2D.drawString(progress+"초",x,y);
     }
 }
