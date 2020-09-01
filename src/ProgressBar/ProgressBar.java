@@ -1,5 +1,7 @@
 package ProgressBar;
 
+import javax.swing.*;
+
 public class ProgressBar {
     public static void main(String[] args) {
         ProgressBarDemo obj_frame = new ProgressBarDemo();

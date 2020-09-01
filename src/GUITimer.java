@@ -109,23 +109,23 @@ public class GUITimer extends JFrame implements ItemListener {
     // this method will run when user presses the start button
     void updateDisplay() {
 
-        Timeclass tc = new Timeclass();
-        timer = new Timer(1000, tc);
-        initial = System.currentTimeMillis();
-        timer.start();
+        Timeclass tc = new Timeclass(); // Timeclass클래스 인스턴스 생성
+        timer = new Timer(1000, tc); // Timer인스턴스 생성
+        initial = System.currentTimeMillis(); // initial에 현재시간 저장
+        timer.start(); // Timer클래스의 start()메소드
     }
 
     // code for what happens when user presses the start or reset button
-    public class Event implements ActionListener {
+    public class Event implements ActionListener { // 버튼 눌렀을 때 이벤트
 
         public void actionPerformed(ActionEvent e) {
             String bname = e.getActionCommand();
             if (bname.equals("START")) { // start 눌렀을 때
-                updateDisplay();
+                updateDisplay(); // 타이머 시작
             } else { // reset
                 jltime.setText(" "); // 시간 글자 표시 초기화
                 timer.stop(); // Timer 클래스의 stop()메소드
-                remaining = convertTime();
+                remaining = convertTime(); // ttime 밀리초 변환
             }
         }
     }
@@ -135,23 +135,24 @@ public class GUITimer extends JFrame implements ItemListener {
 
         public void actionPerformed(ActionEvent e) {
 
-            remaining = convertTime();
-            long current = System.currentTimeMillis();
-            long elapsed = current - initial;
-            remaining -= elapsed;
+            remaining = convertTime(); // ttime(콤보박스) 밀리초 변환
+            long current = System.currentTimeMillis(); // 시스템 시간 받아오기
+            long elapsed = current - initial; // elapsed; 경과 경과시간 구하기
+            remaining -= elapsed; // 초기 세팅시간에서 빼기
             // initial = current;
 
+            // 시간표시 포맷설정
             format = NumberFormat.getNumberInstance();
             format.setMinimumIntegerDigits(2);
 
-            if (remaining < 0)
+            if (remaining < 0) // 남은 시간이 -일 때
                 remaining = (long) 0;
-            int minutes = (int) (remaining / 60000);
-            int seconds = (int) ((remaining % 60000) / 1000);
+            int minutes = (int) (remaining / 60000); // 밀리초단위에서 분표시
+            int seconds = (int) ((remaining % 60000) / 1000); // 초단위 표시
             jltime.setText(format.format(minutes) + ":"
-                    + format.format(seconds));
+                    + format.format(seconds)); // 시간 표시
 
-            if (remaining == 0) {
+            if (remaining == 0) { // 남은 시간이 0일 때
                 jltime.setText("Stop");
                 timer.stop();
             }
@@ -163,7 +164,7 @@ public class GUITimer extends JFrame implements ItemListener {
     public void itemStateChanged(ItemEvent ie) {
 
         ttime = (String) jcb.getSelectedItem().toString(); // 콤보박스에서 선택한 분(1~15)를 String으로 받아옴
-        convertTime();
+        //convertTime();
     }
 
     // first need to convert no. of minutes from string to long.
