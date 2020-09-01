@@ -1,5 +1,4 @@
 import ProgressBar.CustomPanel;
-import ProgressBar.ProgressBarDemo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +10,8 @@ import java.awt.event.MouseEvent;
 public class windowFrame extends JFrame implements ActionListener{
 
     int posX=0, posY=0;
+
+    int setTime = 1;
 
     // Button
     JButton btn_close;
@@ -31,10 +32,11 @@ public class windowFrame extends JFrame implements ActionListener{
     // Panel
     Container contentPanel = this.getContentPane();
     JPanel panel = new JPanel();
+    JPanel timePanel = new JPanel();
 
     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
 
-    public CustomPanel timer_panel = new CustomPanel();
+    public CustomPanel circleBar_panel = new CustomPanel();
 
     public windowFrame(String title){
 
@@ -92,6 +94,8 @@ public class windowFrame extends JFrame implements ActionListener{
             }
         });
 
+
+
         // JPanel
         contentPanel.add(btn_setting);
         contentPanel.add(btn_dragbar);
@@ -99,11 +103,11 @@ public class windowFrame extends JFrame implements ActionListener{
         contentPanel.add(btn_close);
         panel.setBackground(new Color(0,0,0,0));
         panel.setLayout(flowLayout);
+
+        circleBar_panel.setBackground(new Color(0,128,128,0));
+
         contentPanel.add(panel);
-
-        timer_panel.setBackground(new Color(0,128,128,0));
-        contentPanel.add(timer_panel);
-
+        contentPanel.add(circleBar_panel);
         setVisible(true);
     }
 
@@ -111,17 +115,26 @@ public class windowFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (btn_setting.equals(e.getSource())) {
             System.out.println("setting");
+
+            //SwingUtilities.invokeLater(new Runnable() {
+            //        public void run() {
+            //            new CustomPanel();
+            //            new CustomPanel().updateDisplay();
+            //            new CustomPanel().repaint();
+            //        }
+            //});
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    for(int num=10; num>=0; num--){
-                        timer_panel.UpdateProgress(num);
-                        timer_panel.repaint();
+                    for(long num = setTime*60*1000; num>=0; num-=1000){
+                        circleBar_panel.UpdateProgress(num,setTime);
+                        circleBar_panel.repaint();
                         try {
                             Thread.sleep(1000);
                             if(num==0){
-                                timer_panel.UpdateProgress(10);
-                                timer_panel.repaint();
+                                circleBar_panel.UpdateProgress(10,setTime);
+                                circleBar_panel.repaint();
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();

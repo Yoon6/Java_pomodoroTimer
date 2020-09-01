@@ -26,12 +26,12 @@ public class ProgressBarDemo extends JFrame implements ActionListener {
             @Override
             public void run() {
                 for(int num=100; num>=0; num--){
-                    jpanel.UpdateProgress(num);
+                    jpanel.UpdateProgress(num,0);
                     jpanel.repaint();
                     try {
                         Thread.sleep(50);
                         if(num==0){
-                            jpanel.UpdateProgress(100);
+                            jpanel.UpdateProgress(100,0);
                             jpanel.repaint();
                         }
                     } catch (InterruptedException e) {
