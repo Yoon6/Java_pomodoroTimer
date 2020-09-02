@@ -7,43 +7,42 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class windowFrame extends JFrame implements ActionListener{
+public class mainFrame extends JFrame implements ActionListener{
 
     int posX=0, posY=0;
 
-    int setTime = 1;
+    int setTime = 2;
 
     // Button
     JButton btn_close;
-    JButton btn_dragbar;
     JButton btn_minimize;
     JButton btn_setting;
+    JButton btn_Play;
 
     // Image
     ImageIcon img_setting = new ImageIcon("res/baseline_settings_white_18dp.png");
-    ImageIcon img_dragbar = new ImageIcon("res/outline_menu_white_18dp.png");
     ImageIcon img_minimize = new ImageIcon("res/outline_minimize_white_18dp.png");
     ImageIcon img_close = new ImageIcon("res/outline_clear_white_18dp.png");
+    ImageIcon img_play = new ImageIcon("res/baseline_play_arrow_white_48dp.png");
     Image tmp_set = img_setting.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
-    Image tmp_dragbar = img_dragbar.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
     Image tmp_minimize = img_minimize.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
     Image tmp_close = img_close.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
+    Image tmp_play = img_play.getImage().getScaledInstance(48,48,Image.SCALE_SMOOTH);
 
     // Panel
     Container contentPanel = this.getContentPane();
     JPanel panel = new JPanel();
-    JPanel timePanel = new JPanel();
 
     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
 
     public CustomPanel circleBar_panel = new CustomPanel();
 
-    public windowFrame(String title){
+    public mainFrame(String title){
 
         super(title);
 
         // JFrame
-        setSize(230,230);
+        setSize(200,200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
         setBackground(new Color(0,0,0,1));
@@ -56,23 +55,26 @@ public class windowFrame extends JFrame implements ActionListener{
 
         // JButton
         btn_setting = new JButton(new ImageIcon(tmp_set));
-        btn_dragbar = new JButton(new ImageIcon(tmp_dragbar));
         btn_minimize = new JButton(new ImageIcon(tmp_minimize));
         btn_close = new JButton(new ImageIcon(tmp_close));
+        btn_Play = new JButton(new ImageIcon(tmp_play));
+
         createButton(btn_setting);
-        createButton(btn_dragbar);
         createButton(btn_minimize);
         createButton(btn_close);
+        createButton(btn_Play);
+
+
         // listener
         btn_setting.addActionListener(this);
-        btn_dragbar.addActionListener(this);
         btn_minimize.addActionListener(this);
         btn_close.addActionListener(this);
+        btn_Play.addActionListener(this);
         // set location and size
-        btn_setting.setBounds(5,5,20,20);
-        //btn_dragbar.setBounds(140,5,20,20);
+        btn_setting.setBounds(90,135,20,20);
         btn_minimize.setBounds(180,5,20,20);
-        btn_close.setBounds(205,5,20,20);
+        btn_close.setBounds(90,50,20,20);
+        btn_Play.setBounds(76,77,48,48);
 
 
         this.addMouseListener(new MouseAdapter()
@@ -98,9 +100,9 @@ public class windowFrame extends JFrame implements ActionListener{
 
         // JPanel
         contentPanel.add(btn_setting);
-        contentPanel.add(btn_dragbar);
-        contentPanel.add(btn_minimize);
+        //contentPanel.add(btn_minimize);
         contentPanel.add(btn_close);
+        contentPanel.add(btn_Play);
         panel.setBackground(new Color(0,0,0,0));
         panel.setLayout(flowLayout);
 
@@ -108,6 +110,7 @@ public class windowFrame extends JFrame implements ActionListener{
 
         contentPanel.add(panel);
         contentPanel.add(circleBar_panel);
+
         setVisible(true);
     }
 
@@ -115,15 +118,16 @@ public class windowFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (btn_setting.equals(e.getSource())) {
             System.out.println("setting");
-
-            //SwingUtilities.invokeLater(new Runnable() {
-            //        public void run() {
-            //            new CustomPanel();
-            //            new CustomPanel().updateDisplay();
-            //            new CustomPanel().repaint();
-            //        }
-            //});
-
+            new settingFrame();
+        }else if(btn_minimize.equals(e.getSource())){
+            System.out.println("minimize");
+            // minimize
+            setState(Frame.ICONIFIED);
+        }else if(btn_close.equals(e.getSource())){
+            System.out.println("close");
+            // close
+            System.exit(0);
+        }else if(btn_Play.equals(e.getSource())){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -133,8 +137,8 @@ public class windowFrame extends JFrame implements ActionListener{
                         try {
                             Thread.sleep(1000);
                             if(num==0){
-                                circleBar_panel.UpdateProgress(10,setTime);
-                                circleBar_panel.repaint();
+                                repaint();
+                                btn_Play.setVisible(true);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -142,16 +146,7 @@ public class windowFrame extends JFrame implements ActionListener{
                     }
                 }
             }).start();
-        }else if(btn_dragbar.equals(e.getSource())){
-            System.out.println("dragbar");
-        }else if(btn_minimize.equals(e.getSource())){
-            System.out.println("minimize");
-            // minimize
-            setState(Frame.ICONIFIED);
-        }else if(btn_close.equals(e.getSource())){
-            System.out.println("close");
-            // close
-            System.exit(0);
+            btn_Play.setVisible(false);
         }
     }
 

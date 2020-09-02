@@ -13,24 +13,14 @@ public class CustomPanel extends JPanel {
 
     int x=0,y=0;
 
-    JLabel jltime = new JLabel();
-    JLabel jl;
-    JComboBox<Integer> jcb;
-    JButton jbt;
-    JButton jbt2;
     NumberFormat format;
 
     Graphics2D g2D;
 
-    public Timer timer;
-    public long initial;
-    public long ttime2;
-    public String ttime = "1";
-    public long remaining;
-
-    String timeSet = "Play";
-    long progress = 0;
+    String timeSet = " ";
+    long progress = 60*1000;
     int setTime = 1;
+
 
     public void UpdateProgress(long progress, int setTime){
         this.setTime=setTime;
@@ -43,6 +33,7 @@ public class CustomPanel extends JPanel {
         int seconds = (int) ((progress % 60000) / 1000); // 초단위 표시
         timeSet=format.format(minutes) + ":"
                 + format.format(seconds); // 시간 표시
+
 
     }
 
@@ -90,5 +81,11 @@ public class CustomPanel extends JPanel {
         x = (0-(int)r.getWidth())/2; // 글자 폭의 반
         y = (0-(int)r.getHeight())/2+fm.getAscent(); // 글자 높이의 반 + y축값
         g2D.drawString(timeSet,x,y);
+        if(progress<=0){
+            timeSet=" ";
+        }
+        g2D.drawString(timeSet,x,y);
+
+
     }
 }
