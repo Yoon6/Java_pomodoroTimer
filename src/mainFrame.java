@@ -1,5 +1,3 @@
-import ProgressBar.CustomPanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,8 +8,9 @@ import java.awt.event.MouseEvent;
 public class mainFrame extends JFrame implements ActionListener{
 
     int posX=0, posY=0;
+    int setTime = 20;
 
-    int setTime = 2;
+    static boolean settingIsOpened=false;
 
     // Button
     JButton btn_close;
@@ -24,7 +23,7 @@ public class mainFrame extends JFrame implements ActionListener{
     ImageIcon img_minimize = new ImageIcon("res/outline_minimize_white_18dp.png");
     ImageIcon img_close = new ImageIcon("res/outline_clear_white_18dp.png");
     ImageIcon img_play = new ImageIcon("res/baseline_play_arrow_white_48dp.png");
-    Image tmp_set = img_setting.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
+    Image tmp_set = img_setting.getImage().getScaledInstance(18,18,Image.SCALE_SMOOTH);
     Image tmp_minimize = img_minimize.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
     Image tmp_close = img_close.getImage().getScaledInstance(20,20,Image.SCALE_SMOOTH);
     Image tmp_play = img_play.getImage().getScaledInstance(48,48,Image.SCALE_SMOOTH);
@@ -71,7 +70,7 @@ public class mainFrame extends JFrame implements ActionListener{
         btn_close.addActionListener(this);
         btn_Play.addActionListener(this);
         // set location and size
-        btn_setting.setBounds(90,135,20,20);
+        btn_setting.setBounds(90,133,20,20);
         btn_minimize.setBounds(180,5,20,20);
         btn_close.setBounds(90,50,20,20);
         btn_Play.setBounds(76,77,48,48);
@@ -118,7 +117,10 @@ public class mainFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (btn_setting.equals(e.getSource())) {
             System.out.println("setting");
-            new settingFrame();
+            if(!settingIsOpened){
+                new settingFrame();
+                settingIsOpened=true;
+            }
         }else if(btn_minimize.equals(e.getSource())){
             System.out.println("minimize");
             // minimize
