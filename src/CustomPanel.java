@@ -81,6 +81,7 @@ public class CustomPanel extends JPanel {
         g2D.drawString(timeSet,x,y);
         if(progress<=0){
             timeSet=" ";
+            mainFrame.isPlay=false;
         }
         g2D.drawString(timeSet,x,y);
 

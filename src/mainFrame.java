@@ -8,9 +8,20 @@ import java.awt.event.MouseEvent;
 public class mainFrame extends JFrame implements ActionListener{
 
     int posX=0, posY=0;
-    int setTime = 20;
+
+    public static int getSetTime() {
+        return setTime;
+    }
+
+    public static void setSetTime(int setTime) {
+        mainFrame.setTime = setTime;
+    }
+
+
+    private static int setTime = 20;
 
     static boolean settingIsOpened=false;
+    static boolean isPlay=false;
 
     // Button
     JButton btn_close;
@@ -130,6 +141,7 @@ public class mainFrame extends JFrame implements ActionListener{
             // close
             System.exit(0);
         }else if(btn_Play.equals(e.getSource())){
+            isPlay=true;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -139,6 +151,8 @@ public class mainFrame extends JFrame implements ActionListener{
                         try {
                             Thread.sleep(1000);
                             if(num==0){
+                                circleBar_panel.setTime=1;
+                                circleBar_panel.progress=60*1000;
                                 repaint();
                                 btn_Play.setVisible(true);
                             }

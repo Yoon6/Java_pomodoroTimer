@@ -1,14 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class settingFrame extends JFrame implements ActionListener{
 
     int posX=0, posY=0;
 
+    JComboBox<Integer> comboBox;
+
+    static int ttime = 19;
     JButton btn_minimize;
     JButton btn_close;
     ImageIcon img_minimize = new ImageIcon("res/outline_minimize_white_18dp.png");
@@ -47,6 +47,13 @@ public class settingFrame extends JFrame implements ActionListener{
             }
         });
 
+        comboBox = new JComboBox<Integer>();
+        for(int i=1; i<=60; i++){
+            comboBox.addItem(Integer.valueOf(i));
+        }
+        comboBox.addItemListener(this::itemStateChanged);
+        comboBox.setSelectedIndex(ttime);
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
 
@@ -60,7 +67,7 @@ public class settingFrame extends JFrame implements ActionListener{
 
         //add(btn_minimize);
         add(btn_close);
-
+        add(comboBox);
         setVisible(true);
     }
 
@@ -80,5 +87,12 @@ public class settingFrame extends JFrame implements ActionListener{
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);
         btn.setContentAreaFilled(false);
+    }
+
+    public void itemStateChanged(ItemEvent ie) {
+        if(!mainFrame.isPlay) {
+            ttime = (int) comboBox.getSelectedItem() - 1;
+            mainFrame.setSetTime(ttime + 1);
+        }
     }
 }
