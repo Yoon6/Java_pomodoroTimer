@@ -13,6 +13,8 @@ public class settingPanel extends JPanel {
         }
         comboBox.addItemListener(this::itemStateChanged);
         comboBox.setSelectedIndex(ttime);
+
+        add(comboBox);
     }
 
     public void itemStateChanged(ItemEvent ie) {

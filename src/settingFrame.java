@@ -4,39 +4,41 @@ import java.awt.event.*;
 
 public class settingFrame extends defaultFrame implements ActionListener{
 
-    JButton btn_set_close;
+    JButton btn_close;
     ImageIcon img_close = new ImageIcon("res/baseline_clear_white_36dp.png");
     Image tmp_close = img_close.getImage().getScaledInstance(24,24,Image.SCALE_SMOOTH);
 
+    settingPanel sp = new settingPanel();
 
     settingFrame(){
         super("Settings");
         setSize(300,200);
-
-
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        setLayout(new BorderLayout());
         setBackground(new Color(0,0,0,122));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        btn_set_close = new JButton(new ImageIcon(tmp_close));
-        //createButton(btn_close);
-        btn_set_close.addActionListener(this);
+        btn_close = new JButton(new ImageIcon(tmp_close));
+        createButton(btn_close);
+        btn_close.addActionListener(this);
 
-        add(btn_set_close);
+        sp.setBackground(new Color(0,0,0,0));
+
+        add(btn_close, BorderLayout.NORTH);
+        add(sp);
 
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==btn_set_close){
+        if(e.getSource()== btn_close){
             mainFrame.settingIsOpened=false;
             dispose();
         }
     }
 
     public void createButton(JButton btn){
-        //btn.setPreferredSize(new Dimension(20,20));
+        btn.setPreferredSize(new Dimension(24,24));
         btn.setBackground(Color.red);
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);

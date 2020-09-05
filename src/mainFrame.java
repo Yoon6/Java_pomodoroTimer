@@ -7,17 +7,12 @@ import java.awt.event.MouseEvent;
 
 public class mainFrame extends defaultFrame implements ActionListener{
 
-
-
     public static int getSetTime() {
         return setTime;
     }
-
     public static void setSetTime(int setTime) {
         mainFrame.setTime = setTime;
     }
-
-
     private static int setTime = 20;
 
     static boolean settingIsOpened=false;
