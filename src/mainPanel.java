@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.text.NumberFormat;
 
-public class CustomPanel extends JPanel {
+public class mainPanel extends JPanel {
 
     int x=0,y=0;
 

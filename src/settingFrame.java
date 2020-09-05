@@ -2,82 +2,36 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class settingFrame extends JFrame implements ActionListener{
+public class settingFrame extends defaultFrame implements ActionListener{
 
-    int posX=0, posY=0;
-
-    JComboBox<Integer> comboBox;
-
-    static int ttime = 19;
-    JButton btn_minimize;
-    JButton btn_close;
-    ImageIcon img_minimize = new ImageIcon("res/outline_minimize_white_18dp.png");
+    JButton btn_set_close;
     ImageIcon img_close = new ImageIcon("res/baseline_clear_white_36dp.png");
-    Image tmp_minimize = img_minimize.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
-    Image tmp_close = img_close.getImage().getScaledInstance(36,36,Image.SCALE_SMOOTH);
+    Image tmp_close = img_close.getImage().getScaledInstance(24,24,Image.SCALE_SMOOTH);
 
 
     settingFrame(){
         super("Settings");
-        setSize(500,300);
+        setSize(300,200);
 
-        setLayout(new FlowLayout());
-        setUndecorated(true);
+
+        setLayout(new FlowLayout(FlowLayout.RIGHT));
         setBackground(new Color(0,0,0,122));
-        Dimension frameSize = this.getSize(); // 프레임 사이즈
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
-        this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
-
-        this.addMouseListener(new MouseAdapter()
-        {
-            public void mousePressed(MouseEvent e)
-            {
-                posX=e.getX();
-                posY=e.getY();
-            }
-        });
-
-        this.addMouseMotionListener(new MouseAdapter()
-        {
-            public void mouseDragged(MouseEvent evt)
-            {
-                //sets frame position when mouse dragged
-                setLocation (evt.getXOnScreen()-posX,evt.getYOnScreen()-posY);
-
-            }
-        });
-
-        comboBox = new JComboBox<Integer>();
-        for(int i=1; i<=60; i++){
-            comboBox.addItem(Integer.valueOf(i));
-        }
-        comboBox.addItemListener(this::itemStateChanged);
-        comboBox.setSelectedIndex(ttime);
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
 
-        btn_minimize = new JButton(new ImageIcon(tmp_minimize));
-        btn_close = new JButton(new ImageIcon(tmp_close));
+        btn_set_close = new JButton(new ImageIcon(tmp_close));
+        //createButton(btn_close);
+        btn_set_close.addActionListener(this);
 
-        createButton(btn_minimize);
-        createButton(btn_close);
-        btn_minimize.addActionListener(this);
-        btn_close.addActionListener(this);
+        add(btn_set_close);
 
-        //add(btn_minimize);
-        add(btn_close);
-        add(comboBox);
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==btn_close){
+        if(e.getSource()==btn_set_close){
             mainFrame.settingIsOpened=false;
             dispose();
-        }else if(e.getSource()==btn_minimize){
-            setState(Frame.ICONIFIED);
         }
     }
 
@@ -89,10 +43,5 @@ public class settingFrame extends JFrame implements ActionListener{
         btn.setContentAreaFilled(false);
     }
 
-    public void itemStateChanged(ItemEvent ie) {
-        if(!mainFrame.isPlay) {
-            ttime = (int) comboBox.getSelectedItem() - 1;
-            mainFrame.setSetTime(ttime + 1);
-        }
-    }
+
 }

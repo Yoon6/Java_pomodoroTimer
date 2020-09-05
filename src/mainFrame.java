@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class mainFrame extends JFrame implements ActionListener{
+public class mainFrame extends defaultFrame implements ActionListener{
 
-    int posX=0, posY=0;
+
 
     public static int getSetTime() {
         return setTime;
@@ -41,11 +41,8 @@ public class mainFrame extends JFrame implements ActionListener{
 
     // Panel
     Container contentPanel = this.getContentPane();
-    JPanel panel = new JPanel();
 
-    FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT);
-
-    public CustomPanel circleBar_panel = new CustomPanel();
+    public mainPanel circleBar_panel = new mainPanel();
 
     public mainFrame(String title){
 
@@ -53,15 +50,8 @@ public class mainFrame extends JFrame implements ActionListener{
 
         // JFrame
         setSize(200,200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
         setBackground(new Color(0,0,0,1));
-        setAlwaysOnTop(true);
-
-        Dimension frameSize = this.getSize(); // 프레임 사이즈
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
-        this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
-
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // JButton
         btn_setting = new JButton(new ImageIcon(tmp_set));
@@ -73,7 +63,6 @@ public class mainFrame extends JFrame implements ActionListener{
         createButton(btn_minimize);
         createButton(btn_close);
         createButton(btn_Play);
-
 
         // listener
         btn_setting.addActionListener(this);
@@ -87,38 +76,13 @@ public class mainFrame extends JFrame implements ActionListener{
         btn_Play.setBounds(76,77,48,48);
 
 
-        this.addMouseListener(new MouseAdapter()
-        {
-            public void mousePressed(MouseEvent e)
-            {
-                posX=e.getX();
-                posY=e.getY();
-            }
-        });
-
-        this.addMouseMotionListener(new MouseAdapter()
-        {
-            public void mouseDragged(MouseEvent evt)
-            {
-                //sets frame position when mouse dragged
-                setLocation (evt.getXOnScreen()-posX,evt.getYOnScreen()-posY);
-
-            }
-        });
-
-
-
         // JPanel
         contentPanel.add(btn_setting);
         //contentPanel.add(btn_minimize);
         contentPanel.add(btn_close);
         contentPanel.add(btn_Play);
-        panel.setBackground(new Color(0,0,0,0));
-        panel.setLayout(flowLayout);
-
         circleBar_panel.setBackground(new Color(0,128,128,0));
 
-        contentPanel.add(panel);
         contentPanel.add(circleBar_panel);
 
         setVisible(true);
@@ -142,7 +106,7 @@ public class mainFrame extends JFrame implements ActionListener{
             System.exit(0);
         }else if(btn_Play.equals(e.getSource())){
             isPlay=true;
-            new Thread(new Runnable() {
+            Thread th1 = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for(long num = setTime*60*1000; num>=0; num-=1000){
@@ -161,7 +125,8 @@ public class mainFrame extends JFrame implements ActionListener{
                         }
                     }
                 }
-            }).start();
+            });
+            th1.start();
             btn_Play.setVisible(false);
         }
     }
