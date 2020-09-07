@@ -16,7 +16,7 @@ public class settingFrame extends defaultFrame implements ActionListener{
         setSize(300,200);
         setBackground(new Color(0,0,0,122));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new FlowLayout(FlowLayout.RIGHT));
+        setLayout(new FlowLayout());
         btn_close = new JButton(new ImageIcon(tmp_close));
         createButton(btn_close);
         btn_close.addActionListener(this);
