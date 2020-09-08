@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class mainFrame extends defaultFrame implements ActionListener{
 
@@ -23,6 +21,18 @@ public class mainFrame extends defaultFrame implements ActionListener{
     JButton btn_minimize;
     JButton btn_setting;
     JButton btn_Play;
+    JButton btn_pause;
+    JButton btn_resume;
+    JButton btn_replay;
+
+    ImageIcon img_pause = new ImageIcon("res/baseline_pause_white_48dp.png");
+    Image tmp_pause = img_pause.getImage().getScaledInstance(48,48,Image.SCALE_SMOOTH);
+
+    ImageIcon img_resume = new ImageIcon("res/baseline_play_arrow_white_48dp.png");
+    Image tmp_resume = img_resume.getImage().getScaledInstance(36,36,Image.SCALE_SMOOTH);
+
+    ImageIcon img_replay = new ImageIcon("res/baseline_replay_white_48dp.png");
+    Image tmp_replay = img_replay.getImage().getScaledInstance(36,36,Image.SCALE_SMOOTH);
 
     // Image
     ImageIcon img_setting = new ImageIcon("res/baseline_settings_white_18dp.png");
@@ -39,10 +49,28 @@ public class mainFrame extends defaultFrame implements ActionListener{
 
     public mainPanel circleBar_panel = new mainPanel();
 
+    Thread th1;
+
     public mainFrame(String title){
-
         super(title);
+        init();
 
+        contentPanel.add(btn_setting);
+        contentPanel.add(btn_close);
+        contentPanel.add(btn_Play);
+        contentPanel.add(btn_pause);
+        btn_pause.setVisible(isPlay);
+        contentPanel.add(btn_resume);
+        btn_resume.setVisible(isPlay);
+        contentPanel.add(btn_replay);
+        btn_replay.setVisible(isPlay);
+        contentPanel.add(circleBar_panel);
+
+
+        setVisible(true);
+    }
+
+    public void init(){
         // JFrame
         setSize(200,200);
         setBackground(new Color(0,0,0,1));
@@ -53,6 +81,18 @@ public class mainFrame extends defaultFrame implements ActionListener{
         btn_minimize = new JButton(new ImageIcon(tmp_minimize));
         btn_close = new JButton(new ImageIcon(tmp_close));
         btn_Play = new JButton(new ImageIcon(tmp_play));
+        btn_pause = new JButton(new ImageIcon(tmp_pause));
+        btn_pause.setBackground(new Color(70, 70, 70));
+        btn_pause.setBorderPainted(false); // 버튼 테두리
+        btn_pause.setFocusPainted(false); // 포커스
+        btn_resume = new JButton(new ImageIcon(tmp_resume));
+        btn_resume.setBackground(new Color(70, 70, 70));
+        btn_resume.setBorderPainted(false); // 버튼 테두리
+        btn_resume.setFocusPainted(false); // 포커스
+        btn_replay = new JButton(new ImageIcon(tmp_replay));
+        btn_replay.setBackground(new Color(70, 70, 70));
+        btn_replay.setBorderPainted(false); // 버튼 테두리
+        btn_replay.setFocusPainted(false); // 포커스
 
         createButton(btn_setting);
         createButton(btn_minimize);
@@ -64,23 +104,18 @@ public class mainFrame extends defaultFrame implements ActionListener{
         btn_minimize.addActionListener(this);
         btn_close.addActionListener(this);
         btn_Play.addActionListener(this);
+        btn_pause.addActionListener(this);
+        btn_resume.addActionListener(this);
         // set location and size
         btn_setting.setBounds(90,133,20,20);
         btn_minimize.setBounds(180,5,20,20);
         btn_close.setBounds(90,50,20,20);
         btn_Play.setBounds(76,77,48,48);
+        btn_pause.setBounds(40,77,120,48);
+        btn_resume.setBounds(40,77,60,48);
+        btn_replay.setBounds(100,77,60,48);
 
-
-        // JPanel
-        contentPanel.add(btn_setting);
-        //contentPanel.add(btn_minimize);
-        contentPanel.add(btn_close);
-        contentPanel.add(btn_Play);
         circleBar_panel.setBackground(new Color(0,128,128,0));
-
-        contentPanel.add(circleBar_panel);
-
-        setVisible(true);
     }
 
     @Override
@@ -101,7 +136,7 @@ public class mainFrame extends defaultFrame implements ActionListener{
             System.exit(0);
         }else if(btn_Play.equals(e.getSource())){
             isPlay=true;
-            Thread th1 = new Thread(new Runnable() {
+            th1 = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for(long num = setTime*60*1000; num>=0; num-=1000){
@@ -113,7 +148,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
                                 circleBar_panel.setTime=1;
                                 circleBar_panel.progress=60*1000;
                                 repaint();
-                                btn_Play.setVisible(true);
+                                btn_Play.setVisible(!isPlay);
+                                btn_pause.setVisible(isPlay);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -122,16 +158,31 @@ public class mainFrame extends defaultFrame implements ActionListener{
                 }
             });
             th1.start();
-            btn_Play.setVisible(false);
+            btn_Play.setVisible(!isPlay);
+            btn_pause.setVisible(isPlay);
+        }
+        else if(btn_pause.equals(e.getSource())){
+            System.out.println("pause");
+            btn_pause.setVisible(false);
+            btn_resume.setVisible(true);
+            btn_replay.setVisible(true);
+            th1.suspend();
+        }else if(btn_resume.equals(e.getSource())){
+            System.out.println("resume");
+
+            th1.resume();
+            btn_pause.setVisible(true);
+            btn_resume.setVisible(false);
+            btn_replay.setVisible(false);
         }
     }
 
     public void createButton(JButton btn){
         //btn.setPreferredSize(new Dimension(20,20));
         btn.setBackground(Color.red);
-        btn.setBorderPainted(false);
-        btn.setFocusPainted(false);
-        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false); // 버튼 테두리
+        btn.setFocusPainted(false); // 포커스
+        btn.setContentAreaFilled(false); // 영역표시
     }
 
     }

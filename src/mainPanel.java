@@ -1,13 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.text.NumberFormat;
 
-public class mainPanel extends JPanel {
+public class mainPanel extends JPanel /*implements MouseListener,MouseMotionListener*/ {
 
     int x=0,y=0;
 
@@ -18,6 +17,10 @@ public class mainPanel extends JPanel {
     String timeSet = " ";
     long progress = 60*1000;
     int setTime = 1;
+
+    JButton btn_pause;
+    ImageIcon img_pause = new ImageIcon("res/baseline_settings_white_18dp.png");
+    Image tmp_pause = img_pause.getImage().getScaledInstance(18,18,Image.SCALE_SMOOTH);
 
 
     public void UpdateProgress(long progress, int setTime){
@@ -32,12 +35,12 @@ public class mainPanel extends JPanel {
         timeSet=format.format(minutes) + ":"
                 + format.format(seconds); // 시간 표시
 
-
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
         g2D = (Graphics2D)g;
         // 라인 부드럽게
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -71,6 +74,7 @@ public class mainPanel extends JPanel {
         g2D.fill(circle);
 
         // 글자
+
         g2D.setColor(new Color(230, 230, 230));
         g2D.rotate(Math.toRadians(90));
         g.setFont(new Font("Verdana",Font.PLAIN,35));
@@ -84,7 +88,6 @@ public class mainPanel extends JPanel {
             mainFrame.isPlay=false;
         }
         g2D.drawString(timeSet,x,y);
-
 
     }
 }
