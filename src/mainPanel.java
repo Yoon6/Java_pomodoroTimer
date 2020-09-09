@@ -14,14 +14,9 @@ public class mainPanel extends JPanel /*implements MouseListener,MouseMotionList
 
     Graphics2D g2D;
 
-    String timeSet = " ";
+    static String timeSet = " ";
     long progress = 60*1000;
     int setTime = 1;
-
-    JButton btn_pause;
-    ImageIcon img_pause = new ImageIcon("res/baseline_settings_white_18dp.png");
-    Image tmp_pause = img_pause.getImage().getScaledInstance(18,18,Image.SCALE_SMOOTH);
-
 
     public void UpdateProgress(long progress, int setTime){
         this.setTime=setTime;

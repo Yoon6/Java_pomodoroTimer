@@ -15,6 +15,9 @@ public class mainFrame extends defaultFrame implements ActionListener{
 
     static boolean settingIsOpened=false;
     static boolean isPlay=false;
+    boolean Replay = false;
+
+    long process1;
 
     // Button
     JButton btn_close;
@@ -106,6 +109,7 @@ public class mainFrame extends defaultFrame implements ActionListener{
         btn_Play.addActionListener(this);
         btn_pause.addActionListener(this);
         btn_resume.addActionListener(this);
+        btn_replay.addActionListener(this);
         // set location and size
         btn_setting.setBounds(90,133,20,20);
         btn_minimize.setBounds(180,5,20,20);
@@ -139,12 +143,13 @@ public class mainFrame extends defaultFrame implements ActionListener{
             th1 = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    for(long num = setTime*60*1000; num>=0; num-=1000){
-                        circleBar_panel.UpdateProgress(num,setTime);
+                    /*
+                    for(long process = setTime*60*1000; process>=0; process-=1000){
+                        circleBar_panel.UpdateProgress(process,setTime);
                         circleBar_panel.repaint();
                         try {
                             Thread.sleep(1000);
-                            if(num==0){
+                            if(process==0){
                                 circleBar_panel.setTime=1;
                                 circleBar_panel.progress=60*1000;
                                 repaint();
@@ -154,6 +159,28 @@ public class mainFrame extends defaultFrame implements ActionListener{
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                    }
+                     */
+                    process1 = setTime*60*1000;
+                    while(true){
+                        if(process1<0)
+                            break;
+
+                        circleBar_panel.UpdateProgress(process1,setTime);
+                        circleBar_panel.repaint();
+                        try {
+                            Thread.sleep(1000);
+                            if(process1==0){
+                                circleBar_panel.setTime=1;
+                                circleBar_panel.progress=60*1000;
+                                circleBar_panel.repaint();
+                                btn_Play.setVisible(!isPlay);
+                                btn_pause.setVisible(isPlay);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        process1-=1000;
                     }
                 }
             });
@@ -174,6 +201,19 @@ public class mainFrame extends defaultFrame implements ActionListener{
             btn_pause.setVisible(true);
             btn_resume.setVisible(false);
             btn_replay.setVisible(false);
+        }else if(btn_replay.equals(e.getSource())){
+            // 처음으로 돌아가서 다시 시작.
+            process1 = setTime*60*1000;
+            circleBar_panel.UpdateProgress(process1,setTime);
+            mainPanel.timeSet=" ";
+            circleBar_panel.repaint();
+            btn_pause.setVisible(true);
+            btn_resume.setVisible(false);
+            btn_replay.setVisible(false);
+            // 시작 상태로 만들어야함
+            isPlay=false;
+            btn_Play.setVisible(true);
+            btn_pause.setVisible(false);
         }
     }
 
