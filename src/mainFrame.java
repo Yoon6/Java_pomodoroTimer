@@ -16,6 +16,7 @@ public class mainFrame extends defaultFrame implements ActionListener{
     static boolean settingIsOpened=false;
     static boolean isPlay=false;
     boolean Replay = false;
+    static boolean autoPlay=false;
 
     long process1;
 
@@ -52,11 +53,16 @@ public class mainFrame extends defaultFrame implements ActionListener{
 
     public mainPanel circleBar_panel = new mainPanel();
 
-    Thread th1;
+    Thread th_main;
+    Thread th_rest = new Thread(new restFrame());
 
     public mainFrame(String title){
         super(title);
         init();
+
+        Dimension frameSize = this.getSize(); // 프레임 사이즈
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
+        this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
 
         contentPanel.add(btn_setting);
         contentPanel.add(btn_close);
@@ -89,18 +95,20 @@ public class mainFrame extends defaultFrame implements ActionListener{
         btn_pause.setBorderPainted(false); // 버튼 테두리
         btn_pause.setFocusPainted(false); // 포커스
         btn_resume = new JButton(new ImageIcon(tmp_resume));
-        btn_resume.setBackground(new Color(70, 70, 70));
-        btn_resume.setBorderPainted(false); // 버튼 테두리
-        btn_resume.setFocusPainted(false); // 포커스
+        //btn_resume.setBackground(new Color(70, 70, 70));
+        //btn_resume.setBorderPainted(false); // 버튼 테두리
+        //btn_resume.setFocusPainted(false); // 포커스
         btn_replay = new JButton(new ImageIcon(tmp_replay));
-        btn_replay.setBackground(new Color(70, 70, 70));
-        btn_replay.setBorderPainted(false); // 버튼 테두리
-        btn_replay.setFocusPainted(false); // 포커스
+        //btn_replay.setBackground(new Color(70, 70, 70));
+        //btn_replay.setBorderPainted(false); // 버튼 테두리
+        //btn_replay.setFocusPainted(false); // 포커스
 
         createButton(btn_setting);
         createButton(btn_minimize);
         createButton(btn_close);
         createButton(btn_Play);
+        createButton(btn_resume);
+        createButton(btn_replay);
 
         // listener
         btn_setting.addActionListener(this);
@@ -139,30 +147,13 @@ public class mainFrame extends defaultFrame implements ActionListener{
             // close
             System.exit(0);
         }else if(btn_Play.equals(e.getSource())){
+            Replay=false;
             isPlay=true;
-            th1 = new Thread(new Runnable() {
+            th_main = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    /*
-                    for(long process = setTime*60*1000; process>=0; process-=1000){
-                        circleBar_panel.UpdateProgress(process,setTime);
-                        circleBar_panel.repaint();
-                        try {
-                            Thread.sleep(1000);
-                            if(process==0){
-                                circleBar_panel.setTime=1;
-                                circleBar_panel.progress=60*1000;
-                                repaint();
-                                btn_Play.setVisible(!isPlay);
-                                btn_pause.setVisible(isPlay);
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                     */
                     process1 = setTime*60*1000;
-                    while(true){
+                    while(!Replay){
                         if(process1<0)
                             break;
 
@@ -170,12 +161,20 @@ public class mainFrame extends defaultFrame implements ActionListener{
                         circleBar_panel.repaint();
                         try {
                             Thread.sleep(1000);
-                            if(process1==0){
-                                circleBar_panel.setTime=1;
-                                circleBar_panel.progress=60*1000;
-                                circleBar_panel.repaint();
-                                btn_Play.setVisible(!isPlay);
-                                btn_pause.setVisible(isPlay);
+
+                            if (process1 == 0) {
+                                th_rest.start();
+                                th_main.sleep(10*1000);
+
+                                if (autoPlay) {
+                                    process1 = setTime * 60 * 1000+1000;
+                                } else {
+                                    circleBar_panel.setTime = 1;
+                                    circleBar_panel.progress = 60 * 1000;
+                                    circleBar_panel.repaint();
+                                    btn_Play.setVisible(!isPlay);
+                                    btn_pause.setVisible(isPlay);
+                                }
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -184,20 +183,26 @@ public class mainFrame extends defaultFrame implements ActionListener{
                     }
                 }
             });
-            th1.start();
+            th_main.start();
             btn_Play.setVisible(!isPlay);
             btn_pause.setVisible(isPlay);
         }
         else if(btn_pause.equals(e.getSource())){
             System.out.println("pause");
+            th_main.suspend();
+
+            circleBar_panel.UpdateProgress(process1,setTime);
+            mainPanel.timeSet=" ";
+            circleBar_panel.repaint();
+
             btn_pause.setVisible(false);
             btn_resume.setVisible(true);
             btn_replay.setVisible(true);
-            th1.suspend();
+
         }else if(btn_resume.equals(e.getSource())){
             System.out.println("resume");
+            th_main.resume();
 
-            th1.resume();
             btn_pause.setVisible(true);
             btn_resume.setVisible(false);
             btn_replay.setVisible(false);
@@ -207,6 +212,10 @@ public class mainFrame extends defaultFrame implements ActionListener{
             circleBar_panel.UpdateProgress(process1,setTime);
             mainPanel.timeSet=" ";
             circleBar_panel.repaint();
+
+            Replay=true;
+            th_main.resume();
+
             btn_pause.setVisible(true);
             btn_resume.setVisible(false);
             btn_replay.setVisible(false);

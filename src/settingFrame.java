@@ -17,15 +17,17 @@ public class settingFrame extends defaultFrame implements ActionListener{
         setBackground(new Color(0,0,0,122));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new FlowLayout());
+
+        Dimension frameSize = this.getSize(); // 프레임 사이즈
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
+        this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
+
         btn_close = new JButton(new ImageIcon(tmp_close));
         createButton(btn_close);
         btn_close.addActionListener(this);
 
-
         sp.setBackground(new Color(0,0,0,0));
         panel.setBackground(new Color(0,0,0,0));
-
-
 
         panel.add(btn_close);
         add(panel);

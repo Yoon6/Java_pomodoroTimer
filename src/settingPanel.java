@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class settingPanel extends JPanel {
     JComboBox<Integer> comboBox;
@@ -57,6 +58,17 @@ public class settingPanel extends JPanel {
         auto.setBackground(new Color(0,0,0,0));
         auto.setFont(new Font("Arial",Font.PLAIN,20));
         auto.setForeground(Color.WHITE);
+        auto.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED){
+                    System.out.println("check");
+                    mainFrame.autoPlay=true;
+                }else{
+                    mainFrame.autoPlay=false;
+                }
+            }
+        });
 
         routine = new JCheckBox("Use routine");
         routine.setBackground(new Color(0,0,0,0));
