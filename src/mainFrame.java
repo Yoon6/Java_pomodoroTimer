@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class mainFrame extends defaultFrame implements ActionListener{
 
@@ -17,6 +19,7 @@ public class mainFrame extends defaultFrame implements ActionListener{
     static boolean isPlay=false;
     boolean Replay = false;
     static boolean autoPlay=false;
+    static boolean break_time_out=false;
 
     long process1;
 
@@ -53,8 +56,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
 
     public mainPanel circleBar_panel = new mainPanel();
 
-    Thread th_main;
-    Thread th_rest = new Thread(new restFrame());
+    public static Thread th_main;
+    restFrame rf;
 
     public mainFrame(String title){
         super(title);
@@ -163,9 +166,20 @@ public class mainFrame extends defaultFrame implements ActionListener{
                             Thread.sleep(1000);
 
                             if (process1 == 0) {
-                                th_rest.start();
-                                th_main.sleep(10*1000);
-
+                                rf = new restFrame();
+                                int i=10;
+                                //for(i=10; i>=0;i--){
+                                //    rf.time.setText(i+"");
+                                //    Thread.sleep(1000);
+                                //}
+                                while (!break_time_out){
+                                    if(i<=0) break;
+                                    rf.time.setText(i+"");
+                                    Thread.sleep(1000);
+                                    i--;
+                                }
+                                rf.dispose();
+                                break_time_out=false;
                                 if (autoPlay) {
                                     process1 = setTime * 60 * 1000+1000;
                                 } else {

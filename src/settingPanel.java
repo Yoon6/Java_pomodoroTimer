@@ -10,6 +10,7 @@ public class settingPanel extends JPanel {
     JCheckBox auto;
     JCheckBox routine;
     JCheckBox sound;
+    JCheckBox break_screen;
     GridBagLayout grid = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
     settingPanel(){
@@ -24,12 +25,14 @@ public class settingPanel extends JPanel {
         make(comboBox,1,0,1,1);
         make(auto,0,1,4,1);
         make(sound,0,2,4,1);
-        make(routine,0,3,4,1);
+        make(break_screen,0,3,4,1);
+        make(routine,0,4,4,1);
 
         add(label_combo);
         add(comboBox);
         add(auto);
         add(sound);
+        add(break_screen);
         add(routine);
 
     }
@@ -75,10 +78,15 @@ public class settingPanel extends JPanel {
         routine.setFont(new Font("Arial",Font.PLAIN,20));
         routine.setForeground(Color.WHITE);
 
-        sound = new JCheckBox("Sound on");
+        sound = new JCheckBox("Use sound");
         sound.setBackground(new Color(0,0,0,0));
         sound.setFont(new Font("Arial",Font.PLAIN,20));
         sound.setForeground(Color.WHITE);
+
+        break_screen = new JCheckBox("Use break screen");
+        break_screen.setBackground(new Color(0,0,0,0));
+        break_screen.setFont(new Font("Arial",Font.PLAIN,20));
+        break_screen.setForeground(Color.WHITE);
     }
 
     public void make(JComponent c, int x, int y, int w, int h) {
