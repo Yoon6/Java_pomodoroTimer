@@ -32,7 +32,7 @@ public class restFrame extends JFrame{
 
         setLayout(grid);
 
-        gbc.fill=GridBagConstraints.BOTH;
+        gbc.fill=GridBagConstraints.CENTER;
         gbc.weightx=1.0;
         gbc.weighty=1.0;
 
@@ -42,7 +42,7 @@ public class restFrame extends JFrame{
         setUndecorated(true);
         setAlwaysOnTop(true);
 
-        setBackground(new Color(0,0,0,122));
+        setBackground(new Color(0,0,0,150));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         time = new JLabel(" ");
@@ -54,6 +54,11 @@ public class restFrame extends JFrame{
         explanation1.setFont(new Font("Arial",Font.PLAIN,20));
         explanation1.setForeground(Color.WHITE);
         explanation1.setBackground(new Color(0,0,0,0));
+
+        explanation2 = new JLabel("Close with ESC");
+        explanation2.setFont(new Font("Arial",Font.PLAIN,20));
+        explanation2.setForeground(Color.WHITE);
+        explanation2.setBackground(new Color(0,0,0,0));
 
         addKeyListener(new KeyListener() {
             @Override
@@ -74,11 +79,21 @@ public class restFrame extends JFrame{
                 }
             }
         });
+        JLabel dumb1 = new JLabel();
+        JLabel dumb2 = new JLabel();
 
-        make(explanation1,0,0,1,1);
-        make(time,0,1,1,1);
+        make(dumb1,0,0,1,1);
+        make(explanation1,1,0,1,1);
+        make(time,2,0,1,1);
+        make(explanation2,3,0,1,1);
+        make(dumb2,4,0,1,1);
+
 
         add(time);
+        add(explanation1);
+        add(explanation2);
+        add(dumb1);
+        add(dumb2);
         setVisible(true);
         toFront();
         requestFocus();

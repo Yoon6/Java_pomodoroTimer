@@ -18,8 +18,9 @@ public class mainFrame extends defaultFrame implements ActionListener{
     static boolean settingIsOpened=false;
     static boolean isPlay=false;
     boolean Replay = false;
-    static boolean autoPlay=false;
-    static boolean break_time_out=false;
+    static boolean autoPlay=true; // 설정 체크
+    static boolean break_time_out=false; // esc입력
+    static boolean break_screenCheck=true; // 설정 체크
 
     long process1;
 
@@ -166,19 +167,17 @@ public class mainFrame extends defaultFrame implements ActionListener{
                             Thread.sleep(1000);
 
                             if (process1 == 0) {
-                                rf = new restFrame();
-                                int i=10;
-                                //for(i=10; i>=0;i--){
-                                //    rf.time.setText(i+"");
-                                //    Thread.sleep(1000);
-                                //}
-                                while (!break_time_out){
-                                    if(i<=0) break;
-                                    rf.time.setText(i+"");
-                                    Thread.sleep(1000);
-                                    i--;
+                                if(break_screenCheck) {
+                                    rf = new restFrame();
+                                    int i = 10;
+                                    while (!break_time_out) {
+                                        if (i <= 0) break;
+                                        rf.time.setText(i + "");
+                                        Thread.sleep(1000);
+                                        i--;
+                                    }
+                                    rf.dispose();
                                 }
-                                rf.dispose();
                                 break_time_out=false;
                                 if (autoPlay) {
                                     process1 = setTime * 60 * 1000+1000;

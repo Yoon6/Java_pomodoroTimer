@@ -31,6 +31,7 @@ public class settingFrame extends defaultFrame implements ActionListener{
 
         panel.add(btn_close);
         add(panel);
+
         add(sp);
         setVisible(true);
     }

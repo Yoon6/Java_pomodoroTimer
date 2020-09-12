@@ -11,12 +11,16 @@ public class settingPanel extends JPanel {
     JCheckBox routine;
     JCheckBox sound;
     JCheckBox break_screen;
+    static boolean autoChecked=true;
+    static boolean breakChecked=true;
+
     GridBagLayout grid = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
     settingPanel(){
         setLayout(grid);
 
         init();
+
         gbc.fill=GridBagConstraints.BOTH;
         gbc.weightx=1.0;
         gbc.weighty=1.0;
@@ -33,7 +37,6 @@ public class settingPanel extends JPanel {
         add(auto);
         add(sound);
         add(break_screen);
-        add(routine);
 
     }
 
@@ -61,17 +64,6 @@ public class settingPanel extends JPanel {
         auto.setBackground(new Color(0,0,0,0));
         auto.setFont(new Font("Arial",Font.PLAIN,20));
         auto.setForeground(Color.WHITE);
-        auto.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED){
-                    System.out.println("check");
-                    mainFrame.autoPlay=true;
-                }else{
-                    mainFrame.autoPlay=false;
-                }
-            }
-        });
 
         routine = new JCheckBox("Use routine");
         routine.setBackground(new Color(0,0,0,0));
@@ -87,6 +79,52 @@ public class settingPanel extends JPanel {
         break_screen.setBackground(new Color(0,0,0,0));
         break_screen.setFont(new Font("Arial",Font.PLAIN,20));
         break_screen.setForeground(Color.WHITE);
+
+
+        // 체크박스 유지를 위한 코드
+        auto.setSelected(true);
+        if(!autoChecked)
+            auto.setSelected(false);
+
+        break_screen.setSelected(true);
+        if(!breakChecked)
+            break_screen.setSelected(false);
+
+        auto.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+                if(e.getStateChange()==ItemEvent.SELECTED){
+                    System.out.println("check");
+                    mainFrame.autoPlay=true;
+                    autoChecked=true;
+                }else if(e.getStateChange()==ItemEvent.DESELECTED){
+                    System.out.println("uncheck");
+                    mainFrame.autoPlay=false;
+                    autoChecked=false;
+                }
+            }
+        });
+        break_screen.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+                if(e.getStateChange()==ItemEvent.SELECTED){
+                    System.out.println("check");
+                    mainFrame.break_screenCheck=true;
+                    breakChecked=true;
+                }else if(e.getStateChange()==ItemEvent.DESELECTED){
+                    System.out.println("uncheck");
+                    mainFrame.break_screenCheck=false;
+                    breakChecked=false;
+                }
+            }
+        });
+
+
+
+
+
     }
 
     public void make(JComponent c, int x, int y, int w, int h) {
