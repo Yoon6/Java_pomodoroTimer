@@ -28,6 +28,10 @@ public class restFrame extends JFrame{
 
     public restFrame(){
 
+        ImageIcon img = new ImageIcon("res/App_Icon.png");
+
+        setIconImage(img.getImage());
+
         Dimension frameSize = this.getSize(); // 프레임 사이즈
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
 

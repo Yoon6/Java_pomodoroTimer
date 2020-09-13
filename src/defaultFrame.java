@@ -10,6 +10,10 @@ public class defaultFrame extends JFrame {
     defaultFrame(String name){
         super(name);
 
+        ImageIcon img = new ImageIcon("res/App_Icon.png");
+
+        setIconImage(img.getImage());
+
         setUndecorated(true);
         setAlwaysOnTop(true);
 

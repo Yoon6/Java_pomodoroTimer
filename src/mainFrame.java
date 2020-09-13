@@ -283,5 +283,4 @@ public class mainFrame extends defaultFrame implements ActionListener{
         btn.setFocusPainted(false); // 포커스
         btn.setContentAreaFilled(false); // 영역표시
     }
-
-    }
+}
