@@ -19,8 +19,11 @@ public class mainFrame extends defaultFrame implements ActionListener{
     static boolean isPlay=false;
     boolean Replay = false;
     static boolean autoPlay=true; // 설정 체크
-    static boolean break_time_out=false; // esc입력
     static boolean break_screenCheck=true; // 설정 체크
+    static boolean soundCheck=true; // 설정 체크
+    static boolean break_time_out=false; // esc입력
+
+    musicPlayer mp = new musicPlayer();
 
     long process1;
 
@@ -151,13 +154,17 @@ public class mainFrame extends defaultFrame implements ActionListener{
             // close
             System.exit(0);
         }else if(btn_Play.equals(e.getSource())){
+
             Replay=false;
             isPlay=true;
             th_main = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     process1 = setTime*60*1000;
+                    if(soundCheck)
+                        mp.play("res/bgm/start.wav");
                     while(!Replay){
+
                         if(process1<0)
                             break;
 
@@ -167,6 +174,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
                             Thread.sleep(1000);
 
                             if (process1 == 0) {
+                                if(soundCheck)
+                                    mp.play("res/bgm/Sound 25.wav");
                                 if(break_screenCheck) {
                                     rf = new restFrame();
                                     int i = 10;
@@ -181,6 +190,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
                                 break_time_out=false;
                                 if (autoPlay) {
                                     process1 = setTime * 60 * 1000+1000;
+                                    if(soundCheck)
+                                        mp.play("res/bgm/start.wav");
                                 } else {
                                     circleBar_panel.setTime = 1;
                                     circleBar_panel.progress = 60 * 1000;
@@ -201,6 +212,9 @@ public class mainFrame extends defaultFrame implements ActionListener{
             btn_pause.setVisible(isPlay);
         }
         else if(btn_pause.equals(e.getSource())){
+            if(soundCheck)
+                mp.play("res/bgm/end.wav");
+
             System.out.println("pause");
             th_main.suspend();
 
@@ -213,6 +227,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
             btn_replay.setVisible(true);
 
         }else if(btn_resume.equals(e.getSource())){
+            if(soundCheck)
+                mp.play("res/bgm/start.wav");
             System.out.println("resume");
             th_main.resume();
 
@@ -220,6 +236,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
             btn_resume.setVisible(false);
             btn_replay.setVisible(false);
         }else if(btn_replay.equals(e.getSource())){
+            if(soundCheck)
+                mp.play("res/bgm/end.wav");
             // 처음으로 돌아가서 다시 시작.
             process1 = setTime*60*1000;
             circleBar_panel.UpdateProgress(process1,setTime);

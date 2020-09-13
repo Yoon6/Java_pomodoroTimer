@@ -13,6 +13,7 @@ public class settingPanel extends JPanel {
     JCheckBox break_screen;
     static boolean autoChecked=true;
     static boolean breakChecked=true;
+    static boolean soundChecked=true;
 
     GridBagLayout grid = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
@@ -90,6 +91,10 @@ public class settingPanel extends JPanel {
         if(!breakChecked)
             break_screen.setSelected(false);
 
+        sound.setSelected(true);
+        if(!soundChecked)
+            sound.setSelected(false);
+
         auto.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -120,7 +125,21 @@ public class settingPanel extends JPanel {
                 }
             }
         });
+        sound.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
 
+                if(e.getStateChange()==ItemEvent.SELECTED){
+                    System.out.println("check");
+                    mainFrame.soundCheck=true;
+                    soundChecked=true;
+                }else if(e.getStateChange()==ItemEvent.DESELECTED){
+                    System.out.println("uncheck");
+                    mainFrame.soundCheck=false;
+                    soundChecked=false;
+                }
+            }
+        });
 
 
 
