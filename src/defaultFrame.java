@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+// mainFrame과 settingFrame의 공통부분
 public class defaultFrame extends JFrame {
     int posX=0, posY=0;
 

@@ -14,7 +14,7 @@ public class restFrame extends JFrame{
     GridBagConstraints gbc = new GridBagConstraints();
 
 
-
+    // girdbaglayout 설정
     public void make(JComponent c, int x, int y, int w, int h) {
 
         gbc.gridx = x;
@@ -26,9 +26,10 @@ public class restFrame extends JFrame{
         // GridBagLayout의 GridBagConstraints의 set하는 방법
     }
 
-    public restFrame(){Dimension frameSize = this.getSize(); // 프레임 사이즈
+    public restFrame(){
+
+        Dimension frameSize = this.getSize(); // 프레임 사이즈
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
-        this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
 
         setLayout(grid);
 
@@ -45,10 +46,12 @@ public class restFrame extends JFrame{
         setBackground(new Color(0,0,0,150));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+
+        // 레이블 설정
         time = new JLabel(" ");
-        time.setFont(new Font("Arial",Font.PLAIN,20));
-        time.setForeground(Color.WHITE);
-        time.setBackground(new Color(0,0,0,0));
+        time.setFont(new Font("Arial",Font.PLAIN,20)); //폰트
+        time.setForeground(Color.WHITE); // 글자 컬러
+        time.setBackground(new Color(0,0,0,0)); // 배경 컬러(rgb,alpha(투명도))
 
         explanation1 = new JLabel("Protect your eyes!");
         explanation1.setFont(new Font("Arial",Font.PLAIN,20));
@@ -60,7 +63,7 @@ public class restFrame extends JFrame{
         explanation2.setForeground(Color.WHITE);
         explanation2.setBackground(new Color(0,0,0,0));
 
-        addKeyListener(new KeyListener() {
+        addKeyListener(new KeyListener() { // 키보드 리스너
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -73,7 +76,7 @@ public class restFrame extends JFrame{
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode()==27){
+                if(e.getKeyCode()==27){ // esc키 눌렀을 때.
                     dispose();
                     mainFrame.break_time_out=true;
                 }

@@ -15,8 +15,8 @@ public class mainFrame extends defaultFrame implements ActionListener{
     }
     private static int setTime = 20;
 
-    static boolean settingIsOpened=false;
-    static boolean isPlay=false;
+    static boolean settingIsOpened=false; // 설정창이 열렸는지
+    static boolean isPlay=false; // 플레이 여부
     boolean Replay = false;
     static boolean autoPlay=true; // 설정 체크
     static boolean break_screenCheck=true; // 설정 체크
@@ -62,6 +62,11 @@ public class mainFrame extends defaultFrame implements ActionListener{
 
     public static Thread th_main;
     restFrame rf;
+
+    public static void main(String[] args) {
+        mainFrame wf = new mainFrame("Pomodoro");
+
+    }
 
     public mainFrame(String title){
         super(title);
@@ -139,11 +144,11 @@ public class mainFrame extends defaultFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (btn_setting.equals(e.getSource())) {
+        if (btn_setting.equals(e.getSource())) { // 설정 버튼
             System.out.println("setting");
-            if(!settingIsOpened){
-                new settingFrame();
-                settingIsOpened=true;
+            if(!settingIsOpened){ // 안 열려 있을 때만
+                new settingFrame(); // 프레임 생성
+                settingIsOpened=true; // 불린값 변경
             }
         }else if(btn_minimize.equals(e.getSource())){
             System.out.println("minimize");
@@ -153,17 +158,18 @@ public class mainFrame extends defaultFrame implements ActionListener{
             System.out.println("close");
             // close
             System.exit(0);
-        }else if(btn_Play.equals(e.getSource())){
+        }else if(btn_Play.equals(e.getSource())){ // 플레이 버튼 클릭
 
             Replay=false;
-            isPlay=true;
-            th_main = new Thread(new Runnable() {
+            isPlay=true; // 플레이 여부
+            th_main = new Thread(new Runnable() { // 쓰레드를 만들어 mainFrame을 반복시킨다.
                 @Override
                 public void run() {
-                    process1 = setTime*60*1000;
-                    if(soundCheck)
+                    process1 = setTime*60*1000; // 초기 시간값 ( 밀리초 )
+                    if(soundCheck) // 사운드 재생
                         mp.play("res/bgm/start.wav");
-                    while(!Replay){
+
+                    while(!Replay){ // 타이머 시간표시 반복
 
                         if(process1<0)
                             break;
@@ -173,11 +179,13 @@ public class mainFrame extends defaultFrame implements ActionListener{
                         try {
                             Thread.sleep(1000);
 
-                            if (process1 == 0) {
-                                if(soundCheck)
+                            if (process1 == 0) { // 시간이 0초 남았을 때
+
+                                if(soundCheck) // 사운드
                                     mp.play("res/bgm/Sound 25.wav");
-                                if(break_screenCheck) {
-                                    rf = new restFrame();
+
+                                if(break_screenCheck) { // 쿨다운, 화면 보호기
+                                    rf = new restFrame(); // restFrame 생성
                                     int i = 10;
                                     while (!break_time_out) {
                                         if (i <= 0) break;
@@ -188,14 +196,17 @@ public class mainFrame extends defaultFrame implements ActionListener{
                                     rf.dispose();
                                 }
                                 break_time_out=false;
-                                if (autoPlay) {
+
+                                if (autoPlay) { // 자동 시작이 체크되어 있을때.
                                     process1 = setTime * 60 * 1000+1000;
-                                    if(soundCheck)
+
+                                    if(soundCheck) // 사운드
                                         mp.play("res/bgm/start.wav");
-                                } else {
+                                } else { // 자동 시작이 체크되어있지 않을 때.
                                     circleBar_panel.setTime = 1;
                                     circleBar_panel.progress = 60 * 1000;
-                                    circleBar_panel.repaint();
+                                    circleBar_panel.repaint(); // 리페인트
+
                                     btn_Play.setVisible(!isPlay);
                                     btn_pause.setVisible(isPlay);
                                 }
@@ -207,17 +218,18 @@ public class mainFrame extends defaultFrame implements ActionListener{
                     }
                 }
             });
-            th_main.start();
-            btn_Play.setVisible(!isPlay);
-            btn_pause.setVisible(isPlay);
+            th_main.start(); // 쓰레드 시작
+            btn_Play.setVisible(!isPlay); // 플레이 버튼 안보이게
+            btn_pause.setVisible(isPlay); // 일시정지 버튼 보이게
         }
         else if(btn_pause.equals(e.getSource())){
-            if(soundCheck)
+            if(soundCheck) // 사운드
                 mp.play("res/bgm/end.wav");
 
             System.out.println("pause");
-            th_main.suspend();
+            th_main.suspend(); // 쓰레드 멈추기
 
+            // 일시정지하면 graphics2D 리페인트
             circleBar_panel.UpdateProgress(process1,setTime);
             mainPanel.timeSet=" ";
             circleBar_panel.repaint();
@@ -227,24 +239,30 @@ public class mainFrame extends defaultFrame implements ActionListener{
             btn_replay.setVisible(true);
 
         }else if(btn_resume.equals(e.getSource())){
-            if(soundCheck)
+            if(soundCheck) // 사운드
                 mp.play("res/bgm/start.wav");
             System.out.println("resume");
-            th_main.resume();
+            th_main.resume(); // 쓰레드 재시작
 
             btn_pause.setVisible(true);
             btn_resume.setVisible(false);
             btn_replay.setVisible(false);
-        }else if(btn_replay.equals(e.getSource())){
+        }else if(btn_replay.equals(e.getSource())){ // 재시작, 초기화
+            // soundCheck가 참이면 bgm
             if(soundCheck)
                 mp.play("res/bgm/end.wav");
+
             // 처음으로 돌아가서 다시 시작.
-            process1 = setTime*60*1000;
+            process1 = setTime*60*1000; // 초기 세팅값
+            // mainFrame의 graphics2D 리페인트
             circleBar_panel.UpdateProgress(process1,setTime);
             mainPanel.timeSet=" ";
             circleBar_panel.repaint();
 
+            // 리플레이를 누르면 쓰레드의 while문을 빠져나온다.
             Replay=true;
+
+            // 쓰레드 실행상태로
             th_main.resume();
 
             btn_pause.setVisible(true);
@@ -257,6 +275,7 @@ public class mainFrame extends defaultFrame implements ActionListener{
         }
     }
 
+    // 버튼 투명 설정 메소드
     public void createButton(JButton btn){
         //btn.setPreferredSize(new Dimension(20,20));
         btn.setBackground(Color.red);

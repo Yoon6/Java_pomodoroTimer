@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-public class settingPanel extends JPanel {
+public class settingPanel extends JPanel{
     JComboBox<Integer> comboBox;
     static int ttime = 19;
     JLabel label_combo;
@@ -61,6 +63,7 @@ public class settingPanel extends JPanel {
         comboBox.setSelectedIndex(ttime);
         comboBox.setEditable(true);
 
+        // 체크박스 글자, 폰트, 배경, 색 설정
         auto = new JCheckBox("Automatically restart");
         auto.setBackground(new Color(0,0,0,0));
         auto.setFont(new Font("Arial",Font.PLAIN,20));
@@ -95,14 +98,15 @@ public class settingPanel extends JPanel {
         if(!soundChecked)
             sound.setSelected(false);
 
-        auto.addItemListener(new ItemListener() {
+        // 체크박스 리스너
+        auto.addItemListener(new ItemListener() { // 오토플레이
             @Override
             public void itemStateChanged(ItemEvent e) {
 
-                if(e.getStateChange()==ItemEvent.SELECTED){
+                if(e.getStateChange()==ItemEvent.SELECTED){ // 체크가 됐으면
                     System.out.println("check");
                     mainFrame.autoPlay=true;
-                    autoChecked=true;
+                    autoChecked=true; // 체크박스 체크 여부
                 }else if(e.getStateChange()==ItemEvent.DESELECTED){
                     System.out.println("uncheck");
                     mainFrame.autoPlay=false;
@@ -140,10 +144,6 @@ public class settingPanel extends JPanel {
                 }
             }
         });
-
-
-
-
     }
 
     public void make(JComponent c, int x, int y, int w, int h) {

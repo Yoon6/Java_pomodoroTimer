@@ -8,16 +8,17 @@ public class settingFrame extends defaultFrame implements ActionListener{
     ImageIcon img_close = new ImageIcon("res/baseline_clear_white_36dp.png");
     Image tmp_close = img_close.getImage().getScaledInstance(24,24,Image.SCALE_SMOOTH);
 
-    settingPanel sp = new settingPanel();
-    JPanel panel = new JPanel();
+    settingPanel sp = new settingPanel(); // 체크박스 패널
+    JPanel panel = new JPanel(); // 닫기 버튼 패널
 
     settingFrame(){
         super("Settings");
         setSize(300,200);
         setBackground(new Color(0,0,0,122));
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 닫으면 안보이게
         setLayout(new FlowLayout());
 
+        // 초기 위치 설정
         Dimension frameSize = this.getSize(); // 프레임 사이즈
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
         this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
@@ -36,14 +37,16 @@ public class settingFrame extends defaultFrame implements ActionListener{
         setVisible(true);
     }
 
+    // 버튼 리스너
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()== btn_close){
-            mainFrame.settingIsOpened=false;
-            dispose();
+            mainFrame.settingIsOpened=false; // 세팅 패널이 열렸는지.
+            dispose(); // 안보이게
         }
     }
 
+    // 버튼 투명
     public void createButton(JButton btn){
         btn.setPreferredSize(new Dimension(24,24));
         btn.setBackground(Color.red);
