@@ -30,12 +30,10 @@
 - 타이머에 마우스를 올려 Pause가 가능하고, Resume, Restart가 가능하다.
 
 ![README/Untitled%202.png](README/Untitled%202.png)
+![README/Untitled%203.png](README/Untitled%203.png)
+![README/Untitled%204.png](README/Untitled%204.png)
 
 ### 쿨 다운 화면
-
-![README/Untitled%203.png](README/Untitled%203.png)
-
-![README/Untitled%204.png](README/Untitled%204.png)
 
 - 타이머가 사이클을 돌고 나면 10초간  쿨 다운 화면이 나온다.
 - ESC를 누르면 즉시 종료할 수 있다.
